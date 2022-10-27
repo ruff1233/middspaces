@@ -9,7 +9,7 @@ function Home(props) {
 
     return (
     <div>
-        MiddSpaces Home Page :)
+        Welcome to MiddSpaces!
         <Stack spacing={2} direction="row">
         <Button variant="contained" onClick={() => {navigate('/space')}}>Example Space</Button>
         <Button variant="contained" onClick={() => {navigate('/newreservation')}}>Example New Reservation</Button>
