@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import emailjs from '@emailjs/browser';
 
 function ResDialog(props) {
     const { open, setOpen, start, end } = props;
@@ -15,8 +16,19 @@ function ResDialog(props) {
         setOpen(false)
     };
 
+    var templateParams = {
+      to_name: name,
+      send_to: email,
+    };
+
     const handleOk = () => {
         setOpen(false)
+        emailjs.send('service_vbgomsq', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
+          .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+          }, function(error) {
+            console.log('FAILED...', error);
+          });
     };
 
   return (
