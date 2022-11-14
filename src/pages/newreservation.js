@@ -22,6 +22,7 @@ function NewReservation(props) {
             <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }} style={{paddingTop: 10}}>New Reservation</Typography>
             <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }} style={{paddingBottom: 10}}>*Space Name* : *Floor #*</Typography>
             <Divider />
+            <img src="../bihall_floor_3.jpg" alt="Bihall third floor map" width="500" height="600"/>
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
                 <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*ADA Information*</Typography>
                 <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Outlet?*</Typography>
