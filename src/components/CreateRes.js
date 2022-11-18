@@ -1,7 +1,5 @@
-import { Note, SettingsRemote } from "@mui/icons-material";
-import React, { useState } from "react";
-import {middspacesRef} from './firebase';
-import Button from '@mui/material/Button';
+import React from "react";
+import {resRef} from '../firebase';
 
 function CreateRes() {
     const [res, setRes] = React.useState("test")
@@ -13,7 +11,7 @@ function CreateRes() {
             done: false
         }
     
-        middspacesRef.push(item)
+        resRef.push(item)
         setRes("")
     }
 

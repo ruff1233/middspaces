@@ -6,25 +6,44 @@ import ResDialog from '../components/ResDialog.js';
 import Select, { SelectChangeEvent } from '@mui/material/Select'; 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import TextField from '@mui/material/TextField';
+import { resRef, spaceRef } from '../firebase';
+import { child, get } from "firebase/database";
+import { useParams } from 'react-router-dom';
 
 function NewReservation(props) {
-    const [open, setOpen] = React.useState(false);
-    const [time, setTime] = React.useState('');
     const [date, setDate] = React.useState(new Date());
+    const [time, setTime] = React.useState("");
+    const [space, setSpace] = React.useState({});
+    const [open, setOpen] = React.useState(false);
 
-    const handleClick = () => {
+    let { spaceName } = useParams();
 
-    };
+    React.useEffect(() => {
+        get(child(spaceRef, `${spaceName}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            setSpace(snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      }, []);
+
+      const handleClick = () => {
+        setOpen(true);
+      };
 
     const handleDateChange = (date:Date) => {
         setDate(date)
     }
 
-    const handleChange = (event: SelectChangeEvent) => {
+    const handleTimeChange = (event: SelectChangeEvent) => {
         setTime(event.target.value);
     };
 
@@ -36,20 +55,21 @@ function NewReservation(props) {
     <div>
         <Box sx={{ flexDirection: 'column' }}>
             <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }} style={{paddingTop: 10}}>New Reservation</Typography>
-            <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }} style={{paddingBottom: 10}}>*Space Name* : *Floor #*</Typography>
+            <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }} style={{paddingBottom: 10}}>{spaceName} | Floor {space.floorNum}</Typography>
             <Divider />
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*ADA Information*</Typography>
-                <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Outlet?*</Typography>
-                <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Nearby Bathoom? Water Fountain?* **Any other relevant info**</Typography>
+                <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>ADA: {space.adaInfo}</Typography>
+                <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>Outlet: {space.outlet}</Typography>
+                <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>Bathroom: {space.bathroom}</Typography>
+                <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>Water Fountain: {space.waterFountain}</Typography>
             </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"left"}}>
+            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
                 <DatePicker selected={date} onChange={(e) => handleDateChange(e)} customInput={<CustomPicker />} />
             </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"left"}}>
-                <FormControl size="small" style={{width: "10%"}} >
+            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
+                <FormControl size="small" style={{width: 210}} >
                     <InputLabel>Time</InputLabel>
-                    <Select value={time} label="Time" onChange={handleChange}>
+                    <Select value={time} label="Time" onChange={handleTimeChange}>
                         <MenuItem value={"8:00am-8:30am"}>8:00am-8:30am</MenuItem>
                         <MenuItem value={"8:30am-9:00am"}>8:30am-9:00am</MenuItem>
                         <MenuItem value={"9:00am-9:30am"}>9:00am-9:30am</MenuItem>
@@ -77,8 +97,11 @@ function NewReservation(props) {
                     </Select>
                 </FormControl>
             </Box>
+            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
+                <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Reserve</Button>
+            </Box>
         </Box>
-        <ResDialog open={open} setOpen={setOpen}/>
+        <ResDialog open={open} setOpen={setOpen} spaceName={spaceName} time={time} date={date}/>
     </div>
     );
 }

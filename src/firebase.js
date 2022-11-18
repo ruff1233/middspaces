@@ -13,5 +13,6 @@ const firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig)
   const databaseRef = firebase.database().ref()
-  export const middspacesRef = databaseRef.child("middspaces")
+  export const resRef = databaseRef.child("Reservations")
+  export const spaceRef = databaseRef.child("Spaces")
   export default firebase;
