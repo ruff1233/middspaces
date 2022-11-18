@@ -23,7 +23,7 @@ function ResDialog(props) {
 
     const handleOk = () => {
         setOpen(false)
-        emailjs.send('service_vbgomsq', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
+        emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
           .then(function(response) {
             console.log('SUCCESS!', response.status, response.text);
           }, function(error) {

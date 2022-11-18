@@ -2,19 +2,35 @@ import React from "react";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
 import ResDialog from '../components/ResDialog.js';
+import Select, { SelectChangeEvent } from '@mui/material/Select'; 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import TextField from '@mui/material/TextField';
 
 function NewReservation(props) {
     const [open, setOpen] = React.useState(false);
-    const [start, setStart] = React.useState("");
-    const [end, setEnd] = React.useState("");
+    const [time, setTime] = React.useState('');
+    const [date, setDate] = React.useState(new Date());
 
-    const handleClick = (start, end) => {
-        setStart(start);
-        setEnd(end);
-        setOpen(true);
-      };
+    const handleClick = () => {
+
+    };
+
+    const handleDateChange = (date:Date) => {
+        setDate(date)
+    }
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setTime(event.target.value);
+    };
+
+    const CustomPicker = React.forwardRef(({ value, onClick }, ref) => (
+        <TextField size="small" label="Date" onClick={onClick} value={value} ref={ref} />
+    ));
 
     return (
     <div>
@@ -27,49 +43,42 @@ function NewReservation(props) {
                 <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Outlet?*</Typography>
                 <Typography align="left" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Nearby Bathoom? Water Fountain?* **Any other relevant info**</Typography>
             </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>*Date Picker that I cannot figure out for the life of me*</Typography>
+            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"left"}}>
+                <DatePicker selected={date} onChange={(e) => handleDateChange(e)} customInput={<CustomPicker />} />
             </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Button variant="contained" onClick={() => {handleClick("8:00am","8:30am")}}>8:00am-8:30am</Button>
-                <Button disabled variant="contained">8:30am-9:00am</Button>
-                <Button variant="contained">9:00am-9:30am</Button>
-                <Button variant="contained">9:30am-10:00am</Button>
-                <Button disabled variant="contained">10:00am-10:30am</Button>
-                <Button variant="contained">10:30am-11:00am</Button>
-            </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Button variant="contained">11:00am-11:30am</Button>
-                <Button variant="contained">11:30am-12:00pm</Button>
-                <Button variant="contained">12:00pm-12:30pm</Button>
-                <Button disabled variant="contained">12:30pm-1:00pm</Button>
-                <Button variant="contained">1:00pm-1:30pm</Button>
-                <Button variant="contained">1:30pm-2:00pm</Button>
-            </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Button variant="contained">2:00pm-2:30pm</Button>
-                <Button variant="contained">2:30pm-3:00pm</Button>
-                <Button variant="contained">3:00pm-3:30pm</Button>
-                <Button variant="contained">3:30pm-4:00pm</Button>
-                <Button variant="contained">4:00pm-4:30pm</Button>
-                <Button variant="contained">4:30pm-5:00pm</Button>
-            </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Button variant="contained">5:00pm-5:30pm</Button>
-                <Button variant="contained">5:30pm-6:00pm</Button>
-                <Button variant="contained">6:00pm-6:30pm</Button>
-                <Button variant="contained">6:30pm-7:00pm</Button>
-                <Button variant="contained">7:00pm-7:30pm</Button>
-                <Button variant="contained">7:30pm-8:00pm</Button>
-            </Box>
-            <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
-                <Button variant="contained">8:00pm-8:30pm</Button>
-                <Button variant="contained">8:30pm-9:00pm</Button>
-                <Button variant="contained">9:00pm-9:30pm</Button>
-                <Button variant="contained">9:30pm-10:00pm</Button>
+            <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"left"}}>
+                <FormControl size="small" style={{width: "10%"}} >
+                    <InputLabel>Time</InputLabel>
+                    <Select value={time} label="Time" onChange={handleChange}>
+                        <MenuItem value={"8:00am-8:30am"}>8:00am-8:30am</MenuItem>
+                        <MenuItem value={"8:30am-9:00am"}>8:30am-9:00am</MenuItem>
+                        <MenuItem value={"9:00am-9:30am"}>9:00am-9:30am</MenuItem>
+                        <MenuItem value={"9:30am-10:00am"}>9:30am-10:00am</MenuItem>
+                        <MenuItem value={"10:00am-10:30am"}>10:00am-10:30am</MenuItem>
+                        <MenuItem value={"10:30am-11:00am"}>10:30am-11:00am</MenuItem>
+                        <MenuItem value={"11:00am-11:30am"}>11:00am-11:30am</MenuItem>
+                        <MenuItem value={"11:30am-12:00pm"}>11:30am-12:00pm</MenuItem>
+                        <MenuItem value={"12:00pm-12:30pm"}>12:00pm-12:30pm</MenuItem>
+                        <MenuItem value={"12:30pm-1:00pm"}>12:30pm-1:00pm</MenuItem>
+                        <MenuItem value={"1:00pm-1:30pm"}>1:00pm-1:30pm</MenuItem>
+                        <MenuItem value={"1:30pm-2:00pm"}>1:30pm-2:00pm</MenuItem>
+                        <MenuItem value={"2:00pm-2:30pm"}>2:00pm-2:30pm</MenuItem>
+                        <MenuItem value={"2:30pm-3:00pm"}>2:30pm-3:00pm</MenuItem>
+                        <MenuItem value={"3:00pm-3:30pm"}>3:00pm-3:30pm</MenuItem>
+                        <MenuItem value={"3:30pm-4:00pm"}>3:30pm-4:00pm</MenuItem>
+                        <MenuItem value={"4:00pm-4:30pm"}>4:00pm-4:30pm</MenuItem>
+                        <MenuItem value={"4:30pm-5:00pm"}>4:30pm-5:00pm</MenuItem>
+                        <MenuItem value={"5:00pm-5:30pm"}>5:00pm-5:30pm</MenuItem>
+                        <MenuItem value={"5:30pm-6:00pm"}>5:30pm-6:00pm</MenuItem>
+                        <MenuItem value={"6:00pm-6:30pm"}>6:00pm-6:30pm</MenuItem>
+                        <MenuItem value={"6:30pm-7:00pm"}>6:30pm-7:00pm</MenuItem>
+                        <MenuItem value={"7:00pm-7:30pm"}>7:00pm-7:30pm</MenuItem>
+                        <MenuItem value={"7:30pm-8:00pm"}>7:30pm-8:00pm</MenuItem>
+                    </Select>
+                </FormControl>
             </Box>
         </Box>
-        <ResDialog open={open} start={start} setOpen={setOpen} end={end}/>
+        <ResDialog open={open} setOpen={setOpen}/>
     </div>
     );
 }
