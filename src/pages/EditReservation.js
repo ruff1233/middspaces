@@ -141,7 +141,7 @@ function EditReservation(props) {
                 <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Confirm Edit</Button>
             </Box>
         </Box>
-        <ResDialog open={open} setOpen={setOpen} spaceName={space.spaceName} time={time} date={date}/>
+        <ResDialog open={open} setTime={setTime} reservations={bookings} setOpen={setOpen} spaceName={space.spaceName} time={time} date={date}/>
     </div>
     );
 }
