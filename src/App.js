@@ -17,7 +17,7 @@ function App() {
       </Box>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/newreservation" element={<NewReservation />}></Route>
+          <Route path="/newreservation/:spaceName" element={<NewReservation />}></Route>
           <Route path="/space" element={<Space />}></Route>
           <Route path="/about" element={<About />}></Route>
         </Routes>

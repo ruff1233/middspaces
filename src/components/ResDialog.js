@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import emailjs from '@emailjs/browser';
 
 function ResDialog(props) {
-    const { open, setOpen, start, end } = props;
+    const { open, setOpen, spaceName, time, date } = props;
     const [name, setName] = useState();
     const [email, setEmail] = useState();
 
@@ -40,7 +40,7 @@ function ResDialog(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Book This Space From " + start + " Until " + end + "?"}
+          {"Booking ", spaceName, " - ", time}
         </DialogTitle>
         <DialogContent style={{paddingTop: 5}}>
             <TextField onChange={(e) => setName(e.target.value)} required style={{paddingRight: 10}} id="resName" label="Name" variant="outlined" />
