@@ -4,6 +4,7 @@ import Space  from './pages/Space.js';
 import About  from './pages/About.js';
 import TopBar from './components/TopBar.js';
 import NewReservation  from './pages/NewReservation.js';
+import EditReservation  from './pages/EditReservation.js';
 import Home  from './pages/Home.js';
 import Box from '@mui/material/Box';
 
@@ -17,7 +18,8 @@ function App() {
       </Box>
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/newreservation/:spaceName" element={<NewReservation />}></Route>
+          <Route path="/newres/:spaceName" element={<NewReservation />}></Route>
+          <Route path="/editres/:_id" element={<EditReservation />}></Route>
           <Route path="/space" element={<Space />}></Route>
           <Route path="/about" element={<About />}></Route>
         </Routes>

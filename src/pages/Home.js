@@ -12,7 +12,8 @@ function Home(props) {
         Welcome to MiddSpaces!
         <Stack spacing={2} direction="row">
         <Button variant="contained" onClick={() => {navigate('/space')}}>Example Space</Button>
-        <Button variant="contained" onClick={() => {navigate('/newreservation/testSpace')}}>Example New Reservation</Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/testSpace')}}>Example New Reservation</Button>
+        <Button variant="contained" onClick={() => {navigate('/editres/testRes2')}}>Example Edit Reservation</Button>
         </Stack>
     </div>
     );

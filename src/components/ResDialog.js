@@ -6,11 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import emailjs from '@emailjs/browser';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function ResDialog(props) {
-    const { open, setOpen, spaceName, time, date } = props;
+    const { open, setOpen, spaceName, time, setTime, date, reservations } = props;
     const [name, setName] = useState();
     const [email, setEmail] = useState();
+    const [openDouble, setOpenDouble] = useState(false);
 
     const handleCancel = () => {
         setOpen(false)
@@ -23,12 +26,25 @@ function ResDialog(props) {
 
     const handleOk = () => {
         setOpen(false)
-        emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
+        if(!reservations.has(time)) {
+          emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
           .then(function(response) {
             console.log('SUCCESS!', response.status, response.text);
           }, function(error) {
             console.log('FAILED...', error);
           });
+        } else {
+          setOpenDouble(true);
+          setTime("");
+        }
+    };
+
+    const handleDoubleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpenDouble(false);
     };
 
   return (
@@ -51,6 +67,11 @@ function ResDialog(props) {
             <Button disabled={!name || !email} variant="outlined" onClick={handleOk}>Submit Reservation</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={openDouble} autoHideDuration={6000} onClose={handleDoubleClose}>
+        <Alert onClose={handleDoubleClose} severity="error" sx={{ width: '100%' }}>
+          This time is already booked! Reservation unsuccessful.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
