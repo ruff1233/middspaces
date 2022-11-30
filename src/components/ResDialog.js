@@ -40,7 +40,7 @@ function ResDialog(props) {
             "date": styleDate,
             "spaceName": spaceName,
           }));
-          //emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW");
+          emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW");
           setOpenConfirm(true);
           navigate('/');
         } else {
