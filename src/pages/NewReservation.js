@@ -10,24 +10,25 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import TextField from '@mui/material/TextField';
 import { resRef, spaceRef } from '../firebase';
 import { child, get } from "firebase/database";
 import { useParams } from 'react-router-dom';
-import { SettingsBackupRestoreSharp } from "@mui/icons-material";
 
 function NewReservation(props) {
-    const [date, setDate] = React.useState("");
+    const { setOpenConfirm } = props;
+    const [date, setDate] = React.useState(new Date());
     const [time, setTime] = React.useState("");
     const [space, setSpace] = React.useState({});
     const [open, setOpen] = React.useState(false);
-    const [reservations, setReservations] = React.useState([]);
     const [bookings, setBookings] = React.useState(new Map());
     const [rerender, setRerender] = React.useState(false);
+    const [styleDate, setStyleDate] = React.useState("");
 
     let { spaceName } = useParams();
 
     React.useEffect(() => {
+        setDate(date);
+        setStyleDate((date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
         //Load in space information
         get(child(spaceRef, `${spaceName}`)).then((snapshot) => {
           if (snapshot.exists()) {
@@ -38,7 +39,7 @@ function NewReservation(props) {
         }).catch((error) => {
           console.error(error);
         });
-      }, []);
+      });
 
     const handleClick = () => {
         setOpen(true);
@@ -52,27 +53,36 @@ function NewReservation(props) {
             if (snapshot.exists()) {
                 snapshot.forEach(function(resSnapshot) {
                     setBookings(bookings.set(resSnapshot.val().time, false));
-                    console.log(resSnapshot.val());
                 });
-            } else {
-                console.log("No data available");
             }
         }).catch((error) => {
             console.error(error);
       });
       setTime('');
       setDate(date);
+      setStyleDate((date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
     }
 
     const handleTimeChange = (event: SelectChangeEvent) => {
         setTime(event.target.value);
     };
 
-    const CustomPicker = React.forwardRef(({ value, onClick }, ref) => (
+    /*const CustomPicker = React.forwardRef(({ value, onClick }, ref) => (
         <TextField size="small" label="Date" onClick={onClick} value={value} ref={ref} />
-    ));
+    ));*/
 
     function useForceUpdate(){
+        var styleDate = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+        //Load in reservations for selected space on selected date
+        get(resRef.orderByChild("date").equalTo(styleDate)).then((snapshot) => {
+            if (snapshot.exists()) {
+                snapshot.forEach(function(resSnapshot) {
+                    setBookings(bookings.set(resSnapshot.val().time, false));
+                });
+            }
+        }).catch((error) => {
+            console.error(error);
+      });
         setRerender(!rerender);
     }
 
@@ -89,7 +99,7 @@ function NewReservation(props) {
                 <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>Water Fountain: {space.waterFountain}</Typography>
             </Box>
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
-                <DatePicker selected={date} onChange={(e) => handleDateChange(e)} customInput={<CustomPicker />} />
+                <DatePicker selected={date} onChange={(e) => handleDateChange(e)} />
             </Box>
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
                 <FormControl disabled={!date} size="small" style={{width: 210}} >
@@ -106,7 +116,7 @@ function NewReservation(props) {
                         <MenuItem disabled={bookings.has("12:00pm-12:30pm")} value={"12:00pm-12:30pm"}>12:00pm-12:30pm</MenuItem>
                         <MenuItem disabled={bookings.has("12:30pm-1:00pm")} value={"12:30pm-1:00pm"}>12:30pm-1:00pm</MenuItem>
                         <MenuItem disabled={bookings.has("1:00pm-1:30pm")} value={"1:00pm-1:30pm"}>1:00pm-1:30pm</MenuItem>
-                        <MenuItem disabled={bookings.has("1:00pm-1:30pm")} value={"1:00pm-1:30pm"} value={"1:30pm-2:00pm"}>1:30pm-2:00pm</MenuItem>
+                        <MenuItem disabled={bookings.has("1:30pm-2:00pm")} value={"1:30pm-2:00pm"}>1:30pm-2:00pm</MenuItem>
                         <MenuItem disabled={bookings.has("2:00pm-2:30pm")} value={"2:00pm-2:30pm"}>2:00pm-2:30pm</MenuItem>
                         <MenuItem disabled={bookings.has("2:30pm-3:00pm")} value={"2:30pm-3:00pm"}>2:30pm-3:00pm</MenuItem>
                         <MenuItem disabled={bookings.has("3:00pm-3:30pm")} value={"3:00pm-3:30pm"}>3:00pm-3:30pm</MenuItem>
@@ -126,7 +136,7 @@ function NewReservation(props) {
                 <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Reserve</Button>
             </Box>
         </Box>
-        <ResDialog open={open} setTime={setTime} reservations={bookings} setOpen={setOpen} spaceName={spaceName} time={time} date={date}/>
+        <ResDialog setOpenConfirm={setOpenConfirm} open={open} setTime={setTime} styleDate={styleDate} reservations={bookings} setOpen={setOpen} spaceName={spaceName} time={time} date={date}/>
     </div>
     );
 }

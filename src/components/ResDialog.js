@@ -8,12 +8,16 @@ import Button from '@mui/material/Button';
 import emailjs from '@emailjs/browser';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { resRef } from '../firebase';
+import { useNavigate } from "react-router-dom";
 
 function ResDialog(props) {
-    const { open, setOpen, spaceName, time, setTime, date, reservations } = props;
+    const { open, setOpen, spaceName, time, setOpenConfirm, setTime, styleDate, reservations } = props;
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [openDouble, setOpenDouble] = useState(false);
+    const [resId, setResId] = useState("");
+    let navigate = useNavigate();
 
     const handleCancel = () => {
         setOpen(false)
@@ -22,17 +26,23 @@ function ResDialog(props) {
     var templateParams = {
       to_name: name,
       send_to: email,
+      res_id: resId,
+      space_name: spaceName,
+      time: time,
+      date: styleDate,
     };
 
     const handleOk = () => {
         setOpen(false)
         if(!reservations.has(time)) {
-          emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW")
-          .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-          }, function(error) {
-            console.log('FAILED...', error);
-          });
+          setResId(resRef.push({
+            "time": time,
+            "date": styleDate,
+            "spaceName": spaceName,
+          }));
+          //emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW");
+          setOpenConfirm(true);
+          navigate('/');
         } else {
           setOpenDouble(true);
           setTime("");
@@ -43,7 +53,6 @@ function ResDialog(props) {
       if (reason === 'clickaway') {
         return;
       }
-  
       setOpenDouble(false);
     };
 
@@ -56,7 +65,7 @@ function ResDialog(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Booking ", spaceName, " - ", time}
+          {"Booking " + spaceName + ": " + time + " on " + styleDate}
         </DialogTitle>
         <DialogContent style={{paddingTop: 5}}>
             <TextField onChange={(e) => setName(e.target.value)} required style={{paddingRight: 10}} id="resName" label="Name" variant="outlined" />
@@ -72,6 +81,7 @@ function ResDialog(props) {
           This time is already booked! Reservation unsuccessful.
         </Alert>
       </Snackbar>
+
     </div>
   );
 }
