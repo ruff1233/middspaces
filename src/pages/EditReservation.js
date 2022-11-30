@@ -13,26 +13,36 @@ import "react-datepicker/dist/react-datepicker.css";
 import { resRef, spaceRef } from '../firebase';
 import { child, get } from "firebase/database";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-function NewReservation(props) {
-    const { setOpenConfirm } = props;
+function EditReservation(props) {
+    const { setOpenConfirm, setOpenDelete, setOpenUpdate } = props;
     const [date, setDate] = React.useState(new Date());
     const [time, setTime] = React.useState("");
     const [space, setSpace] = React.useState({});
+    const [spaceName, setSpaceName] = React.useState("");
     const [open, setOpen] = React.useState(false);
     const [bookings, setBookings] = React.useState(new Map());
     const [rerender, setRerender] = React.useState(false);
     const [styleDate, setStyleDate] = React.useState("");
+    let navigate = useNavigate();
 
-    let { spaceName } = useParams();
+    let { _id } = useParams();
 
     React.useEffect(() => {
         setDate(date);
         setStyleDate((date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
         //Load in space information
-        get(child(spaceRef, `${spaceName}`)).then((snapshot) => {
+        get(child(resRef, `${_id}`)).then((snapshot) => {
           if (snapshot.exists()) {
-            setSpace(snapshot.val());
+            setSpaceName(snapshot.val().spaceName);
+            get(child(spaceRef, `${snapshot.val().spaceName}`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                  setSpace(snapshot.val());
+                }
+              }).catch((error) => {
+                console.error(error);
+              });
           } else {
             console.log("No data available");
           }
@@ -42,7 +52,19 @@ function NewReservation(props) {
       });
 
     const handleClick = () => {
-        setOpen(true);
+        resRef.child(`${_id}`).update({
+            "time": time,
+            "date": styleDate,
+            "spaceName": spaceName,
+        })
+        setOpenUpdate(true);
+        navigate("/");
+    };
+
+    const handleDelete = () => {
+        resRef.child(`${_id}`).remove();
+        setOpenDelete(true);
+        navigate("/");
     };
 
     const handleDateChange = (date:Date) => {
@@ -54,6 +76,8 @@ function NewReservation(props) {
                 snapshot.forEach(function(resSnapshot) {
                     setBookings(bookings.set(resSnapshot.val().time, false));
                 });
+            } else {
+                console.log("No data available");
             }
         }).catch((error) => {
             console.error(error);
@@ -89,8 +113,9 @@ function NewReservation(props) {
     return (
     <div>
         <Box sx={{ flexDirection: 'column' }}>
-            <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }} style={{paddingTop: 10}}>New Reservation</Typography>
-            <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }} style={{paddingBottom: 10}}>{spaceName} | Floor {space.floorNum}</Typography>
+            <Typography align="center" variant="h4" component="div" sx={{ flexGrow: 1 }} style={{paddingTop: 10}}>Edit Reservation</Typography>
+            <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }}>{spaceName} | Floor {space.floorNum}</Typography>
+            <Typography align="center" variant="h6" component="div" sx={{ flexGrow: 1 }} style={{paddingBottom: 10}}>{"Reservation ID: " + _id}</Typography>
             <Divider />
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15}}>
                 <Typography align="center" variant="body1" component="div" sx={{ flexGrow: 1 }}>ADA: {space.adaInfo}</Typography>
@@ -133,11 +158,11 @@ function NewReservation(props) {
                 </FormControl>
             </Box>
             <Box sx={{ flexDirection: 'row' }} style={{padding: 15, textAlign:"center"}}>
-                <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Reserve</Button>
+                <Button color="error" variant="contained" onClick={() => {handleDelete()}}>Delete</Button> &nbsp;
+                <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Confirm Edit</Button>
             </Box>
         </Box>
-        <ResDialog setOpenConfirm={setOpenConfirm} open={open} setTime={setTime} styleDate={styleDate} reservations={bookings} setOpen={setOpen} spaceName={spaceName} time={time} date={date}/>
     </div>
     );
 }
-export default NewReservation;
+export default EditReservation;
