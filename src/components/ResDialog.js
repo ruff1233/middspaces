@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 function ResDialog(props) {
     const { open, setOpen, spaceName, time, setOpenConfirm, setTime, styleDate, reservations } = props;
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState(" ");
     const [openDouble, setOpenDouble] = useState(false);
     const [resId, setResId] = useState("");
     let navigate = useNavigate();
@@ -23,23 +23,22 @@ function ResDialog(props) {
         setOpen(false)
     };
 
-    var templateParams = {
-      to_name: name,
-      send_to: email,
-      res_id: resId,
-      space_name: spaceName,
-      time: time,
-      date: styleDate,
-    };
-
     const handleOk = () => {
         setOpen(false)
         if(!reservations.has(time)) {
-          setResId(resRef.push({
+          const rId = (resRef.push({
             "time": time,
             "date": styleDate,
             "spaceName": spaceName,
-          }));
+          }).key);
+          var templateParams = {
+            to_name: name,
+            send_to: email,
+            res_id: rId,
+            space_name: spaceName,
+            time: time,
+            date: styleDate,
+          };
           emailjs.send('midd.spaces.reservations', 'middspacesnewres', templateParams, "3doC5g_UjSmO1xLoW");
           setOpenConfirm(true);
           navigate('/');

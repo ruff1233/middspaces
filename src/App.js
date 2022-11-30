@@ -13,6 +13,8 @@ import Alert from '@mui/material/Alert';
 
 function App() {
   const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
   
   const handleConfirmClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -31,7 +33,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/newres/:spaceName" element={<NewReservation setOpenConfirm={setOpenConfirm} />}></Route>
-          <Route path="/editres/:_id" element={<EditReservation setOpenConfirm={setOpenConfirm} />}></Route>
+          <Route path="/editres/:_id" element={<EditReservation setOpenDelete={setOpenDelete} setOpenUpdate={setOpenUpdate} setOpenConfirm={setOpenConfirm} />}></Route>
           <Route path="/space" element={<Space />}></Route>
           <Route path="/about" element={<About />}></Route>
         </Routes>
@@ -39,6 +41,16 @@ function App() {
       <Snackbar open={openConfirm} autoHideDuration={6000} onClose={handleConfirmClose}>
         <Alert onClose={handleConfirmClose} severity="success" sx={{ width: '100%' }}>
           Reservation confirmed! Confirmation email has been sent.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openDelete} autoHideDuration={6000} onClose={handleConfirmClose}>
+        <Alert onClose={handleConfirmClose} severity="success" sx={{ width: '100%' }}>
+          Reservation successfully deleted.
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openUpdate} autoHideDuration={6000} onClose={handleConfirmClose}>
+        <Alert onClose={handleConfirmClose} severity="success" sx={{ width: '100%' }}>
+          Reservation successfully updated!
         </Alert>
       </Snackbar>
     </div>

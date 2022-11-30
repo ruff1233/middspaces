@@ -13,9 +13,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { resRef, spaceRef } from '../firebase';
 import { child, get } from "firebase/database";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function EditReservation(props) {
-    const { setOpenConfirm } = props;
+    const { setOpenConfirm, setOpenDelete, setOpenUpdate } = props;
     const [date, setDate] = React.useState(new Date());
     const [time, setTime] = React.useState("");
     const [space, setSpace] = React.useState({});
@@ -24,10 +25,13 @@ function EditReservation(props) {
     const [bookings, setBookings] = React.useState(new Map());
     const [rerender, setRerender] = React.useState(false);
     const [styleDate, setStyleDate] = React.useState("");
+    let navigate = useNavigate();
 
     let { _id } = useParams();
 
     React.useEffect(() => {
+        setDate(date);
+        setStyleDate((date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
         //Load in space information
         get(child(resRef, `${_id}`)).then((snapshot) => {
           if (snapshot.exists()) {
@@ -48,11 +52,19 @@ function EditReservation(props) {
       });
 
     const handleClick = () => {
-        setOpen(true);
+        resRef.child(`${_id}`).update({
+            "time": time,
+            "date": styleDate,
+            "spaceName": spaceName,
+        })
+        setOpenUpdate(true);
+        navigate("/");
     };
 
     const handleDelete = () => {
-
+        resRef.child(`${_id}`).remove();
+        setOpenDelete(true);
+        navigate("/");
     };
 
     const handleDateChange = (date:Date) => {
@@ -84,6 +96,17 @@ function EditReservation(props) {
     ));*/
 
     function useForceUpdate(){
+        var styleDate = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+        //Load in reservations for selected space on selected date
+        get(resRef.orderByChild("date").equalTo(styleDate)).then((snapshot) => {
+            if (snapshot.exists()) {
+                snapshot.forEach(function(resSnapshot) {
+                    setBookings(bookings.set(resSnapshot.val().time, false));
+                });
+            }
+        }).catch((error) => {
+            console.error(error);
+      });
         setRerender(!rerender);
     }
 
@@ -139,7 +162,6 @@ function EditReservation(props) {
                 <Button disabled={!date || !time} variant="contained" onClick={() => {handleClick()}}>Confirm Edit</Button>
             </Box>
         </Box>
-        <ResDialog setOpenConfirm={setOpenConfirm} open={open} setTime={setTime} styleDate={styleDate} reservations={bookings} setOpen={setOpen} spaceName={space.spaceName} time={time} date={date}/>
     </div>
     );
 }
