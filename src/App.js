@@ -10,6 +10,11 @@ import Home  from './pages/Home.js';
 import Box from '@mui/material/Box';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Floor3 from './pages/Floor3.js';
+import ThreeM from './pages/ThreeM.js';
+import ThreeN from './pages/ThreeN.js';
+import ThreeS from './pages/ThreeS.js';
+import ThreeW from './pages/ThreeW.js';
 
 function App() {
   const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -36,6 +41,11 @@ function App() {
           <Route path="/editres/:_id" element={<EditReservation setOpenDelete={setOpenDelete} setOpenUpdate={setOpenUpdate} setOpenConfirm={setOpenConfirm} />}></Route>
           <Route path="/space" element={<Space />}></Route>
           <Route path="/about" element={<About />}></Route>
+          <Route path="/floor3" element={<Floor3 />}></Route>
+          <Route path="/3m" element={<ThreeM />}></Route>
+          <Route path="/3n" element={<ThreeN />}></Route>
+          <Route path="/3s" element={<ThreeS />}></Route>
+          <Route path="/3w" element={<ThreeW />}></Route>
         </Routes>
       </BrowserRouter>
       <Snackbar open={openConfirm} autoHideDuration={6000} onClose={handleConfirmClose}>

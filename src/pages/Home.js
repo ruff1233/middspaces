@@ -14,6 +14,7 @@ function Home(props) {
         <Button variant="contained" onClick={() => {navigate('/space')}}>Example Space</Button>
         <Button variant="contained" onClick={() => {navigate('/newres/testSpace')}}>Example New Reservation</Button>
         <Button variant="contained" onClick={() => {navigate('/editres/testRes2')}}>Example Edit Reservation</Button>
+        <Button variant="contained" onClick={() => {navigate('/floor3')}}>Floor 3</Button>
         </Stack>
     </div>
     );
