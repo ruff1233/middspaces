@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Floor3 from './pages/Floor3.js';
+import Floor4 from './pages/Floor4.js';
+import Floor5 from './pages/Floor5.js';
+import Floor6 from './pages/Floor6.js';
 import ThreeM from './pages/ThreeM.js';
 import ThreeN from './pages/ThreeN.js';
 import ThreeS from './pages/ThreeS.js';
@@ -42,6 +45,9 @@ function App() {
           <Route path="/space" element={<Space />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/floor3" element={<Floor3 />}></Route>
+          <Route path="/floor4" element={<Floor4 />}></Route>
+          <Route path="/floor5" element={<Floor5 />}></Route>
+          <Route path="/floor6" element={<Floor6 />}></Route>
           <Route path="/3m" element={<ThreeM />}></Route>
           <Route path="/3n" element={<ThreeN />}></Route>
           <Route path="/3s" element={<ThreeS />}></Route>

@@ -12,10 +12,10 @@ function Floor3(props) {
         3rd floor:
         <Stack spacing={2} direction="row">
         <Button variant="contained" onClick={() => {navigate('/')}}>Back</Button>
-        <Button variant="contained" onClick={() => {navigate('/3m')}}>3 middle</Button>
-        <Button variant="contained" onClick={() => {navigate('/3n')}}>3 north</Button>
-        <Button variant="contained" onClick={() => {navigate('/3s')}}>3 south </Button>
-        <Button variant="contained" onClick={() => {navigate('/3w')}}>3 west</Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/3M')}}>3 middle</Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/3N')}}>3 north</Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/3S')}}>3 south </Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/3W')}}>3 west</Button>
         </Stack>
     </div>
   );
