@@ -14,10 +14,7 @@ import Floor3 from './pages/Floor3.js';
 import Floor4 from './pages/Floor4.js';
 import Floor5 from './pages/Floor5.js';
 import Floor6 from './pages/Floor6.js';
-import ThreeM from './pages/ThreeM.js';
-import ThreeN from './pages/ThreeN.js';
-import ThreeS from './pages/ThreeS.js';
-import ThreeW from './pages/ThreeW.js';
+
 
 function App() {
   const [openConfirm, setOpenConfirm] = React.useState(false);
@@ -33,7 +30,6 @@ function App() {
 
   return (
     <div className="App">
-      
       <BrowserRouter>
       <Box sx={{ flexGrow: 1 }}>
         <TopBar />
@@ -48,10 +44,6 @@ function App() {
           <Route path="/floor4" element={<Floor4 />}></Route>
           <Route path="/floor5" element={<Floor5 />}></Route>
           <Route path="/floor6" element={<Floor6 />}></Route>
-          <Route path="/3m" element={<ThreeM />}></Route>
-          <Route path="/3n" element={<ThreeN />}></Route>
-          <Route path="/3s" element={<ThreeS />}></Route>
-          <Route path="/3w" element={<ThreeW />}></Route>
         </Routes>
       </BrowserRouter>
       <Snackbar open={openConfirm} autoHideDuration={6000} onClose={handleConfirmClose}>
