@@ -77,7 +77,9 @@ function NewReservation(props) {
         get(resRef.orderByChild("date").equalTo(styleDate)).then((snapshot) => {
             if (snapshot.exists()) {
                 snapshot.forEach(function(resSnapshot) {
-                    setBookings(bookings.set(resSnapshot.val().time, false));
+                    if(resSnapshot.val().spaceName == spaceName) {
+                        setBookings(bookings.set(resSnapshot.val().time, false));
+                    }
                 });
             }
         }).catch((error) => {
