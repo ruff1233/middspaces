@@ -19,7 +19,7 @@ function Floor6(props) {
         </Typography>
         <img src={SixthFloor} alt="Bihall sixth floor map" style={{ width: '800px', }}/>
         <Stack spacing={15} direction="row" alignItems="center" justifyContent="center">
-        <Button variant="contained" onClick={() => {navigate('/newres/6M')}}>Reserve 6 east</Button>
+        <Button variant="contained" onClick={() => {navigate('/newres/6E')}}>Reserve 6 east</Button>
         <Button variant="contained" onClick={() => {navigate('/newres/6G')}}>Reserve Greenhouse</Button>
         <Button variant="contained" onClick={() => {navigate('/newres/6W')}}>Reserve 6 west</Button>
         </Stack>
