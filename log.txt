@@ -1,4 +1,15 @@
---
---11/11/2022 - Emma - Connected database to UI. Drew initial idea for color-coded map (third floor).
+--10/06/2022 - Emma - Made a drawing for UI design.
+--10/14/2022 - Emma - Started a Google Firebase database.
+--10/18/2022 - Emma - Started the process to connect the database from the firebase end.
+--10/27/2022 - Emma - Researched how to connect database to UI. Tried one option found online, but it didn't work. More research needed.
+--10/28/2022 - Emma - Drew initial idea for color-coded map (third floor).
+--11/11/2022 - Emma - Connected database to UI.
 --11/28/2022 - Paul - Worked on loading in reservations by space name and date. Working on making the select component disable times that are already resrerved.
+--11/28/2022 - Emma - Manually added all spaces in Bihall and associated info to database in the spaces section.
 --11/29/2022 - Paul - Added functionality so that users cannot make duplicate reservations even if they reactivate times through browser developer tools
+--12/03/2022 - Emma - Added pages for third floor spaces and made routes to them so you can access the different space pages.
+--12/04/2022 - Emma - Realized each space didn't need its own page (would be accessed through newres/spaceName) and so took those out. Added pages for floors 4, 5, and 6 and routes for them in App.js. Added buttons to access each floor from home page
+--12/05/2022 - Emma - Made color-coded maps with legends to make colors understandable.
+--12/06/2022 - Emma - Added images for all floors into UI. Made buttons going to a new reservation page for each space and placed them in most logical locations on page.
+--12/06/2022 - Emma - Cleaned up home page (removed generic edit reservation button).
+--12/12/2022 - Emma - Fixed bug where Reserve 6 east went to page for 6M, which is a space that doesn't exist.
