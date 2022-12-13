@@ -1,2 +1,4 @@
+--
+--11/11/2022 - Emma - Connected database to UI. Drew initial idea for color-coded map (third floor).
 --11/28/2022 - Paul - Worked on loading in reservations by space name and date. Working on making the select component disable times that are already resrerved.
 --11/29/2022 - Paul - Added functionality so that users cannot make duplicate reservations even if they reactivate times through browser developer tools
